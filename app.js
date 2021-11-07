@@ -9,6 +9,20 @@ var usersRouter = require("./routes/users");
 
 var app = express();
 
+// .env setup
+require("dotenv").config();
+
+// db setup
+const mongoose = require("mongoose");
+const mongoDB = process.env.DB_URI;
+
+mongoose
+  .connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB connected"));
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "MongoDB connection error"));
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
